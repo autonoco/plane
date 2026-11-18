@@ -10,6 +10,8 @@ Use the upstream AIO environment contract in `deployments/aio/community/README.m
 
 Set `ENABLE_SIGNUP=0` for invited users only and `DISABLE_WORKSPACE_CREATION=0` to permit workspace creation. These initialize instance settings; manage them in God mode after first boot. Initial administrator setup uses Plane's own setup flow, not direct database writes. Complete it before switching the public hostname.
 
+Before validating uploads, configure the private bucket's CORS policy through its S3 API. Allow `POST`, `PUT`, `GET` and `HEAD`, headers `*`, and origins `https://<temporary-railway-hostname>` and `https://plan.autono.co`. Expose `ETag`; keep the bucket private. Plane uploads directly from the browser using presigned requests. Credentials alone do not configure browser access.
+
 Health check: `/api/instances/`. The image runs upstream migrations during startup. Keep all stateful services private. Persist PostgreSQL and RabbitMQ data; enable database backups before storing production data. Take and verify a backup before every release upgrade.
 
 ## Cutover and rollback
